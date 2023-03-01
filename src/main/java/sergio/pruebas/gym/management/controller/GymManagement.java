@@ -1,6 +1,7 @@
 package sergio.pruebas.gym.management.controller;
 
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -8,12 +9,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import sergio.pruebas.gym.management.entities.dtos.UsuarioDto;
 
-import java.net.http.HttpResponse;
-import java.util.UUID;
+import java.util.List;
 
+import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController("/management")
@@ -22,21 +25,23 @@ public interface GymManagement {
     @PostMapping(value = "/user",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE)
-    HttpResponse<?> altaUsuario(@Valid @RequestBody UsuarioDto user);
+    ResponseEntity<?> altaUsuario(@Valid @RequestBody UsuarioDto user);
 
     @DeleteMapping(value = "/user/{userId}")
-    HttpResponse<?> bajaUsuario(@PathVariable UUID userId);
+    ResponseEntity<?> bajaUsuario(@PathVariable Long userId);
 
     @PutMapping(value = "/user/{userId}",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE)
-    HttpResponse<?> modificarUsuario(@PathVariable UUID userId, @Valid @RequestBody UsuarioDto user);
+    ResponseEntity<?> modificarUsuario(@PathVariable Long userId, @Valid @RequestBody UsuarioDto user);
 
     @GetMapping(value = "/user",
             produces = APPLICATION_JSON_VALUE)
-    HttpResponse<?> buscarUsuario(@RequestParam(value = "userId", required = false) UUID userId,
-                                  @RequestParam(value = "name", required = false) String name,
-                                  @RequestParam(value = "dni", required = false) String dni);
+    @ResponseStatus(OK)
+    @ResponseBody
+    List<UsuarioDto> buscarUsuario(@RequestParam(value = "userId", required = false) Long userId,
+                                   @RequestParam(value = "name", required = false) String name,
+                                   @RequestParam(value = "dni", required = false) String dni);
 
 /*
 + altaClase(ClassDto): ClassDto

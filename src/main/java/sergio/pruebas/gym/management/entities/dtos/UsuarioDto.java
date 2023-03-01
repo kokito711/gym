@@ -1,4 +1,5 @@
 package sergio.pruebas.gym.management.entities.dtos;
 
-public class UsuarioDto {
+
+public record UsuarioDto(Long userId, String name, String dni) {
 }

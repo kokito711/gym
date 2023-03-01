@@ -9,14 +9,14 @@ import sergio.pruebas.gym.management.controller.GymManagementImpl;
 import sergio.pruebas.gym.management.entities.dtos.UsuarioDto;
 import sergio.pruebas.gym.management.service.UserService;
 
-import java.net.http.HttpResponse;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
-import static org.springframework.http.HttpStatus.OK;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class GymManagementImplTest {
@@ -30,13 +30,12 @@ public class GymManagementImplTest {
 
     @Test
     void shouldReturnUserDtoListGetUsersIsCalled() {
-        HttpResponse<List<UsuarioDto>> obtained = (HttpResponse<List<UsuarioDto>>) gymManagementImpl
-                .buscarUsuario(null, null, null);
+        when(userService.getAllUsers(mock(UsuarioDto.class))).thenReturn(List.of(mock(UsuarioDto.class)));
 
-        assertThat(obtained.body()).asList().hasSize(1);
-        assertEquals(obtained.statusCode(), OK.value());
+        List<UsuarioDto> obtained = gymManagementImpl.buscarUsuario(null, "test", null);
 
-        Mockito.verify(userService.getAllUsers(), times(1));
+        assertThat(obtained).asList().hasSize(1);
+        Mockito.verify(userService.getAllUsers(any(UsuarioDto.class)), times(1));
     }
 
     @Test
