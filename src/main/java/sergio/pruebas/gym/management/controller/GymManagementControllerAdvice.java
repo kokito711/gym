@@ -10,13 +10,14 @@ import sergio.pruebas.gym.management.entities.exceptions.UserNotFoundException;
 import sergio.pruebas.gym.management.entities.exceptions.UserValidationException;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Log4j2
 @ControllerAdvice
 public class GymManagementControllerAdvice {
 
     @ExceptionHandler(UserNotFoundException.class)
-    @ResponseStatus(BAD_REQUEST)
+    @ResponseStatus(NOT_FOUND)
     @ResponseBody
     public ErrorDto handleErrorNotFound(UserNotFoundException exception) {
         log.warn(exception.getMessage());

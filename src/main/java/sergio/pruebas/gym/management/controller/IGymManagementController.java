@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import sergio.pruebas.gym.management.entities.dtos.ClassDto;
+import sergio.pruebas.gym.management.entities.dtos.MonitorDto;
 import sergio.pruebas.gym.management.entities.dtos.UsuarioDto;
 
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -33,7 +36,7 @@ public interface IGymManagementController {
     }
 
     @DeleteMapping(value = "/user/{userId}")
-    @ResponseStatus(OK)
+    @ResponseStatus(NO_CONTENT)
     default void bajaUsuario(@PathVariable Long userId) {
     }
 
@@ -56,20 +59,87 @@ public interface IGymManagementController {
         return null;
     }
 
+    @PostMapping(value = "/class",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(CREATED)
+    @ResponseBody
+    default ClassDto altaClase(@RequestBody ClassDto classDto) {
+        return null;
+    }
+
+    @PutMapping(value = "/class",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(OK)
+    @ResponseBody
+    default ClassDto modificarClase(@RequestBody ClassDto classDto) {
+        return null;
+    }
+
+    @GetMapping(value = "/class",
+            produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(OK)
+    @ResponseBody
+    default List<ClassDto> mostrarClases(@RequestParam(value = "classId", required = false) Long classId,
+                                         @RequestParam(value = "name", required = false) String name) {
+        return null;
+    }
+
+    @DeleteMapping(value = "/class/{classId}")
+    @ResponseStatus(NO_CONTENT)
+    @ResponseBody
+    default ClassDto bajaClase(@PathVariable Long classId) {
+        return null;
+    }
+
+    @PostMapping(value = "/monitor",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(CREATED)
+    @ResponseBody
+    default MonitorDto altaMonitor(@RequestBody MonitorDto monitorDto) {
+        return null;
+    }
+
+    @PostMapping(value = "/monitor:assign",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(CREATED)
+    @ResponseBody
+    default void asignarMonitorClase(@RequestParam(value = "monitorId") Long monitorId,
+                                     @RequestParam(value = "classId") Long classId) {
+    }
+
+    @PutMapping(value = "/monitor/{monitorId}",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(OK)
+    @ResponseBody
+    default MonitorDto modificarMonitor(@PathVariable Long monitorId, @RequestBody MonitorDto monitorDto) {
+        return null;
+    }
+
+    @GetMapping(value = "/monitor",
+            produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(OK)
+    @ResponseBody
+    default List<MonitorDto> mostrarMonitores(@RequestParam(value = "monitorId", required = false) Long monitorId,
+                                              @RequestParam(value = "name", required = false) String name) {
+        return null;
+    }
+
+    @DeleteMapping(value = "/monitor/{monitorId}")
+    @ResponseStatus(NO_CONTENT)
+    @ResponseBody
+    default MonitorDto bajaMonitor(@PathVariable Long monitorId) {
+        return null;
+    }
+
+
 /*
-+ altaClase(ClassDto): ClassDto
-+ bajaClase(long): null
-            + modificarClase(long, ClassDto): ClassDto
-+ mostrarClase(long, string):ClassDto
-+ listarClases():List<ClassDto>
-+ altaMonitor(MonitorDto): MonitorDto
-+ bajaMonitor(long)
-+ modificarMonitor(long, MonitorDto):MonitorDto
-+ listarMonitor(): List<MonitorDto>
-+ mostrarMonitor(long, string)
-+ asignarMonitorClase(long,long):null
-            + mostrarMonitorClases() : List<MonitorInClassDto>
++ mostrarMonitorClases() : List<MonitorInClassDto>
 + asignarUsuarioClase(long,long):null
-            + mostrarUsuariosClase(long, string): List<UsersClassDto>*/
+ + mostrarUsuariosClase(long, string): List<UsersClassDto>*/
 
 }
