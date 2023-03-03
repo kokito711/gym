@@ -9,4 +9,5 @@ spring:
 
 logging:
   level:
-    root: DEBUG
+    root: INFO
+    sergio.pruebas.gym.management: DEBUG

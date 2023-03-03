@@ -1,7 +1,5 @@
 package sergio.pruebas.gym.management.controller;
 
-import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +14,7 @@ import sergio.pruebas.gym.management.entities.dtos.UsuarioDto;
 
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -25,23 +24,35 @@ public interface GymManagement {
     @PostMapping(value = "/user",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE)
-    ResponseEntity<?> altaUsuario(@Valid @RequestBody UsuarioDto user);
+    @ResponseStatus(CREATED)
+    @ResponseBody
+    default UsuarioDto altaUsuario(@RequestBody UsuarioDto user) {
+        return null;
+    }
 
     @DeleteMapping(value = "/user/{userId}")
-    ResponseEntity<?> bajaUsuario(@PathVariable Long userId);
+    @ResponseStatus(OK)
+    default void bajaUsuario(@PathVariable Long userId) {
+    }
 
     @PutMapping(value = "/user/{userId}",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE)
-    ResponseEntity<?> modificarUsuario(@PathVariable Long userId, @Valid @RequestBody UsuarioDto user);
+    @ResponseStatus(OK)
+    @ResponseBody
+    default UsuarioDto modificarUsuario(@PathVariable Long userId, @RequestBody UsuarioDto user) {
+        return null;
+    }
 
     @GetMapping(value = "/user",
             produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
     @ResponseBody
-    List<UsuarioDto> buscarUsuario(@RequestParam(value = "userId", required = false) Long userId,
-                                   @RequestParam(value = "name", required = false) String name,
-                                   @RequestParam(value = "dni", required = false) String dni);
+    default List<UsuarioDto> buscarUsuario(@RequestParam(value = "userId", required = false) Long userId,
+                                           @RequestParam(value = "name", required = false) String name,
+                                           @RequestParam(value = "dni", required = false) String dni) {
+        return null;
+    }
 
 /*
 + altaClase(ClassDto): ClassDto

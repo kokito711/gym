@@ -7,7 +7,19 @@ import java.util.List;
 
 @Service
 public class UserService {
-    public List<UsuarioDto> getAllUsers(UsuarioDto usuarioDto) {
+    public List<UsuarioDto> buscarUsuario(UsuarioDto usuarioDto) {
+        return null;
+    }
+
+    public Boolean bajaUsuario(Long userId) {
+        return null;
+    }
+
+    public UsuarioDto altaUsuario(UsuarioDto newUsuario) {
+        return null;
+    }
+
+    public UsuarioDto modificarUsuario(Long userId, UsuarioDto newInfo) {
         return null;
     }
 }
