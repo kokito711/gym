@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import sergio.pruebas.gym.management.entities.dtos.ErrorDto;
 import sergio.pruebas.gym.management.entities.exceptions.UserNotFoundException;
+import sergio.pruebas.gym.management.entities.exceptions.UserValidationException;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
@@ -18,8 +19,15 @@ public class GymManagementControllerAdvice {
     @ResponseStatus(BAD_REQUEST)
     @ResponseBody
     public ErrorDto handleErrorNotFound(UserNotFoundException exception) {
-        log.warn("User cannot be found in system");
+        log.warn(exception.getMessage());
         return new ErrorDto(exception.getMessage(), exception.getExecutionTime());
     }
 
+    @ExceptionHandler(UserValidationException.class)
+    @ResponseStatus(BAD_REQUEST)
+    @ResponseBody
+    public ErrorDto handleErrorUserValidation(UserValidationException exception) {
+        log.warn(exception.getMessage());
+        return new ErrorDto(exception.getMessage(), exception.getExecutionTime());
+    }
 }
