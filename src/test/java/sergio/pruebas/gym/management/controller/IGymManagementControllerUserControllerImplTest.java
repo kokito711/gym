@@ -1,4 +1,4 @@
-package sergio.pruebas.gym;
+package sergio.pruebas.gym.management.controller;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -7,7 +7,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import sergio.pruebas.gym.management.controller.IGymManagementControllerUserControllerImpl;
 import sergio.pruebas.gym.management.entities.dtos.UsuarioDto;
 import sergio.pruebas.gym.management.entities.exceptions.UserNotFoundException;
 import sergio.pruebas.gym.management.entities.exceptions.UserValidationException;
@@ -27,12 +26,12 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static sergio.pruebas.gym.constants.TEST_VALUE_LONG;
+import static sergio.pruebas.gym.constants.TEST_VALUE_STR;
 
 @SpringBootTest
 public class IGymManagementControllerUserControllerImplTest {
 
-    public static final String TEST_VALUE_STR = "test";
-    public static final Long TEST_VALUE_LONG = 1L;
     @Mock
     private UserService userService;
 
