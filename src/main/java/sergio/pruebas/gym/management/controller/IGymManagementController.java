@@ -12,11 +12,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import sergio.pruebas.gym.management.entities.dtos.ClassDto;
+import sergio.pruebas.gym.management.entities.dtos.MonitorClassDto;
 import sergio.pruebas.gym.management.entities.dtos.MonitorDto;
+import sergio.pruebas.gym.management.entities.dtos.UsersClassDto;
 import sergio.pruebas.gym.management.entities.dtos.UsuarioDto;
 
 import java.util.List;
 
+import static java.util.Collections.emptyList;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
@@ -56,7 +59,7 @@ public interface IGymManagementController {
     default List<UsuarioDto> buscarUsuario(@RequestParam(value = "userId", required = false) Long userId,
                                            @RequestParam(value = "name", required = false) String name,
                                            @RequestParam(value = "dni", required = false) String dni) {
-        return null;
+        return emptyList();
     }
 
     @PostMapping(value = "/class",
@@ -137,9 +140,26 @@ public interface IGymManagementController {
     }
 
 
-/*
-+ mostrarMonitorClases() : List<MonitorInClassDto>
-+ asignarUsuarioClase(long,long):null
- + mostrarUsuariosClase(long, string): List<UsersClassDto>*/
+    @GetMapping(value = "/monitor/{monitorId}/clases",
+            produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(OK)
+    @ResponseBody
+    default List<MonitorClassDto> mostrarMonitorClases(@PathVariable Long monitorId) {
+        return null;
+    }
 
+    @GetMapping(value = "/class/{classId}/usuarios",
+            produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(OK)
+    @ResponseBody
+    default List<UsersClassDto> mostrarUsuariosClase(@PathVariable Long classId) {
+        return null;
+    }
+
+    @PostMapping(value = "/class/{classId}:assignUser",
+            consumes = APPLICATION_JSON_VALUE)
+    @ResponseStatus(CREATED)
+    @ResponseBody
+    default void asignarUsuarioClase(@PathVariable String classId, @RequestParam(value = "userId") String userId) {
+    }
 }

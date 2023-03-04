@@ -6,20 +6,12 @@ import sergio.pruebas.gym.management.entities.dtos.UsuarioDto;
 import java.util.List;
 
 @Service
-public class UserService {
-    public List<UsuarioDto> buscarUsuario(UsuarioDto usuarioDto) {
-        return null;
-    }
+public interface UserService {
+    List<UsuarioDto> buscarUsuario(UsuarioDto usuarioDto);
 
-    public Boolean bajaUsuario(Long userId) {
-        return null;
-    }
+    Boolean bajaUsuario(Long userId);
 
-    public UsuarioDto altaUsuario(UsuarioDto newUsuario) {
-        return null;
-    }
+    UsuarioDto altaUsuario(UsuarioDto newUsuario);
 
-    public UsuarioDto modificarUsuario(Long userId, UsuarioDto newInfo) {
-        return null;
-    }
+    UsuarioDto modificarUsuario(Long userId, UsuarioDto newInfo);
 }
