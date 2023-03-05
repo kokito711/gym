@@ -3,16 +3,18 @@ package sergio.pruebas.gym.management.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sergio.pruebas.gym.management.entities.daos.UsuarioDao;
 import sergio.pruebas.gym.management.entities.dtos.UsuarioDto;
+import sergio.pruebas.gym.management.entities.exceptions.UserAlreadyExistsException;
 import sergio.pruebas.gym.management.repository.UserRepository;
 
 import java.util.List;
 import java.util.Objects;
 
-import static java.util.Collections.emptyList;
 import static org.apache.logging.log4j.util.Strings.isBlank;
 import static org.apache.logging.log4j.util.Strings.isNotBlank;
+import static org.springframework.transaction.annotation.Isolation.SERIALIZABLE;
 
 @Service
 @RequiredArgsConstructor
@@ -28,25 +30,35 @@ public class UserServiceImpl implements UserService {
             return usuarioDao.map(this::toDto).stream().toList();
         }
         if (isNotBlank(usuarioDto.dni()) && isBlank(usuarioDto.name())) {
-            return List.of(toDto(repository.findByDni(usuarioDto.dni())));
+            return repository.findByDni(usuarioDto.dni()).map(this::toDto).stream().toList();
         }
         if (isBlank(usuarioDto.dni()) && isNotBlank(usuarioDto.name())) {
             return repository.findByName(usuarioDto.name()).stream().map(this::toDto).toList();
         }
-        if (isNotBlank(usuarioDto.dni()) && isNotBlank(usuarioDto.name())) {
-            return List.of(toDto(repository.findByNameAndDni(usuarioDto.name(), usuarioDto.dni())));
-        }
-        return emptyList();
+        return repository.findByNameAndDni(usuarioDto.name(), usuarioDto.dni())
+                .map(this::toDto)
+                .stream()
+                .toList();
     }
 
     @Override
+    @Transactional(isolation = SERIALIZABLE)
     public Boolean bajaUsuario(Long userId) {
-        return null;
+        if (repository.existsById(userId)) {
+            repository.deleteById(userId);
+            return true;
+        }
+        return false;
     }
 
     @Override
+    @Transactional(isolation = SERIALIZABLE)
     public UsuarioDto altaUsuario(UsuarioDto newUsuario) {
-        return null;
+        if (!repository.existsByDni(newUsuario.dni())) {
+            return toDto(repository
+                    .saveAndFlush(new UsuarioDao(null, newUsuario.name(), newUsuario.dni())));
+        }
+        throw new UserAlreadyExistsException("User already created");
     }
 
     @Override
