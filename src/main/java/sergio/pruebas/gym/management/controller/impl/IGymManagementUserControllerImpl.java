@@ -1,4 +1,4 @@
-package sergio.pruebas.gym.management.controller;
+package sergio.pruebas.gym.management.controller.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import sergio.pruebas.gym.management.controller.IGymManagementController;
 import sergio.pruebas.gym.management.entities.dtos.UsuarioDto;
 import sergio.pruebas.gym.management.entities.exceptions.UserNotFoundException;
 import sergio.pruebas.gym.management.entities.exceptions.UserValidationException;
@@ -31,7 +32,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping("/management")
-public class IGymManagementControllerUserControllerImpl implements IGymManagementController {
+public class IGymManagementUserControllerImpl implements IGymManagementController {
 
     @Autowired
     private final UserService userService;

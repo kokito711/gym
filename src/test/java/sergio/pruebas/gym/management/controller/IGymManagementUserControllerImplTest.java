@@ -7,6 +7,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import sergio.pruebas.gym.management.controller.impl.IGymManagementUserControllerImpl;
 import sergio.pruebas.gym.management.entities.dtos.UsuarioDto;
 import sergio.pruebas.gym.management.entities.exceptions.UserNotFoundException;
 import sergio.pruebas.gym.management.entities.exceptions.UserValidationException;
@@ -30,13 +31,13 @@ import static sergio.pruebas.gym.constants.TEST_VALUE_LONG;
 import static sergio.pruebas.gym.constants.TEST_VALUE_STR;
 
 @SpringBootTest
-public class IGymManagementControllerUserControllerImplTest {
+public class IGymManagementUserControllerImplTest {
 
     @Mock
     private UserService userService;
 
     @InjectMocks
-    private IGymManagementControllerUserControllerImpl gymManagementUserControllerImpl;
+    private IGymManagementUserControllerImpl gymManagementUserControllerImpl;
 
     public static Stream<Arguments> GetUsersListArguments() {
         return Stream.of(Arguments.of(null, null, null),

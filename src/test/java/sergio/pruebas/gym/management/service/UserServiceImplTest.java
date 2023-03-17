@@ -7,7 +7,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import sergio.pruebas.gym.management.entities.daos.UsuarioDao;
 import sergio.pruebas.gym.management.entities.dtos.UsuarioDto;
 import sergio.pruebas.gym.management.entities.exceptions.UserAlreadyExistsException;
+import sergio.pruebas.gym.management.entities.exceptions.UserNotFoundException;
 import sergio.pruebas.gym.management.repository.UserRepository;
+import sergio.pruebas.gym.management.service.impl.UserServiceImpl;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +18,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
@@ -25,11 +26,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static sergio.pruebas.gym.constants.TEST_VALUE_LONG;
 import static sergio.pruebas.gym.constants.TEST_VALUE_STR;
+import static sergio.pruebas.gym.constants.TEST_VALUE_STR_2;
 
 @SpringBootTest
 class UserServiceImplTest {
 
-    public static final UsuarioDto EXPECTED_USUARIO_DTO = new UsuarioDto(TEST_VALUE_LONG, TEST_VALUE_STR, TEST_VALUE_STR);
+    public static final UsuarioDto EXPECTED_USUARIO_DTO = new UsuarioDto(
+            TEST_VALUE_LONG, TEST_VALUE_STR, TEST_VALUE_STR);
     @Mock
     private UserRepository userRepository;
 
@@ -154,8 +157,35 @@ class UserServiceImplTest {
 
     @Test
     void modificarUsuario() {
-        fail();
+        var usuario = new UsuarioDto(null, TEST_VALUE_STR_2, null);
+        var savedUsuarioDao = new UsuarioDao(TEST_VALUE_LONG, TEST_VALUE_STR, TEST_VALUE_STR);
+        var updatedUsuarioDao = new UsuarioDao(TEST_VALUE_LONG, TEST_VALUE_STR_2, TEST_VALUE_STR);
+        var usuarioDao = new UsuarioDao(TEST_VALUE_LONG, TEST_VALUE_STR_2, TEST_VALUE_STR);
+
+        when(userRepository.existsById(TEST_VALUE_LONG)).thenReturn(true);
+        when(userRepository.getReferenceById(TEST_VALUE_LONG)).thenReturn(savedUsuarioDao);
+        when(userRepository.saveAndFlush(usuarioDao)).thenReturn(updatedUsuarioDao);
+
+        var obtained = userServiceImpl.modificarUsuario(TEST_VALUE_LONG, usuario);
+
+        assertThat(obtained).isNotEqualTo(EXPECTED_USUARIO_DTO);
+        assertThat(obtained.name()).isEqualTo(TEST_VALUE_STR_2);
+        verify(userRepository, times(1)).existsById(TEST_VALUE_LONG);
+        verify(userRepository, times(1)).getReferenceById(TEST_VALUE_LONG);
+        verify(userRepository, times(1)).saveAndFlush(usuarioDao);
     }
 
+    @Test
+    void shouldThrowExceptionWhenUpdateUserNotExists() {
+        var usuarioDto = new UsuarioDto(TEST_VALUE_LONG, TEST_VALUE_STR, TEST_VALUE_STR);
 
+        when(userRepository.existsByDni(TEST_VALUE_STR)).thenReturn(false);
+
+        var thrown = assertThrows(UserNotFoundException.class,
+                () -> userServiceImpl.modificarUsuario(TEST_VALUE_LONG, usuarioDto));
+
+        assertTrue(thrown.getMessage().contentEquals("User cannot be found in system"));
+        verify(userRepository, times(1)).existsById(TEST_VALUE_LONG);
+        verify(userRepository, never()).saveAndFlush(any(UsuarioDao.class));
+    }
 }

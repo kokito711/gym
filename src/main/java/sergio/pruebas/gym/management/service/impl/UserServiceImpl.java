@@ -1,4 +1,4 @@
-package sergio.pruebas.gym.management.service;
+package sergio.pruebas.gym.management.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import sergio.pruebas.gym.management.entities.daos.UsuarioDao;
 import sergio.pruebas.gym.management.entities.dtos.UsuarioDto;
 import sergio.pruebas.gym.management.entities.exceptions.UserAlreadyExistsException;
+import sergio.pruebas.gym.management.entities.exceptions.UserNotFoundException;
 import sergio.pruebas.gym.management.repository.UserRepository;
+import sergio.pruebas.gym.management.service.UserService;
 
 import java.util.List;
 import java.util.Objects;
@@ -62,8 +64,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UsuarioDto modificarUsuario(Long userId, UsuarioDto newInfo) {
-        return null;
+    public UsuarioDto modificarUsuario(final Long userId, final UsuarioDto newInfo) {
+        if (!repository.existsById(userId)) {
+            throw new UserNotFoundException("User cannot be found in system");
+        }
+        var savedUser = repository.getReferenceById(userId);
+        if (isNotBlank(newInfo.name())) {
+            savedUser.setName(newInfo.name());
+        }
+        if (isNotBlank(newInfo.dni())) {
+            savedUser.setDni(newInfo.dni());
+        }
+        return toDto(repository.saveAndFlush(savedUser));
     }
 
     private UsuarioDto toDto(UsuarioDao usuarioDao) {
