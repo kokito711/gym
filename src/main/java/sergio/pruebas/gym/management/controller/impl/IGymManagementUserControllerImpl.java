@@ -59,7 +59,7 @@ public class IGymManagementUserControllerImpl implements IGymManagementControlle
     @ResponseBody
     @Override
     public UsuarioDto altaUsuario(@RequestBody UsuarioDto user) {
-        validateUser(user);
+        validateCreateUser(user);
         return userService.altaUsuario(user);
     }
 
@@ -79,19 +79,23 @@ public class IGymManagementUserControllerImpl implements IGymManagementControlle
     @ResponseBody
     @Override
     public UsuarioDto modificarUsuario(@PathVariable Long userId, @RequestBody UsuarioDto user) {
-        validateUser(user);
+        validateCommonUser(user);
         return userService.modificarUsuario(userId, user);
     }
 
-    private void validateUser(UsuarioDto user) {
+    private void validateCreateUser(UsuarioDto user) {
+        validateCommonUser(user);
+        if (!isBlank(user.name()) && isBlank(user.dni())) {
+            throw new UserValidationException("Dni cannot be null");
+        }
+    }
+
+    private void validateCommonUser(UsuarioDto user) {
         if (isBlank(user.name()) && isBlank(user.dni())) {
             throw new UserValidationException("Either the name nor the dni cannot be null");
         }
         if (isBlank(user.name()) && !isBlank(user.dni())) {
             throw new UserValidationException("Name cannot be null");
-        }
-        if (!isBlank(user.name()) && isBlank(user.dni())) {
-            throw new UserValidationException("Dni cannot be null");
         }
     }
 }

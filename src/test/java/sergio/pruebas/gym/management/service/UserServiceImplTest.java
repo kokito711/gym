@@ -53,6 +53,20 @@ class UserServiceImplTest {
     }
 
     @Test
+    void getAllUsers() {
+        var usuario = new UsuarioDto(null, null, null);
+        var usuarioDao = new UsuarioDao(TEST_VALUE_LONG, TEST_VALUE_STR, TEST_VALUE_STR);
+
+        when(userRepository.findAll()).thenReturn(List.of(usuarioDao));
+
+        var obtained = userServiceImpl.buscarUsuario(usuario).get(0);
+
+        assertThat(obtained).isEqualTo(EXPECTED_USUARIO_DTO);
+        verify(userRepository, times(1)).findAll();
+    }
+
+
+    @Test
     void buscarUsuarioByDni() {
         var usuario = new UsuarioDto(null, null, TEST_VALUE_STR);
         var usuarioDao = new UsuarioDao(TEST_VALUE_LONG, TEST_VALUE_STR, TEST_VALUE_STR);

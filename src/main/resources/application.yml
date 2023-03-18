@@ -6,7 +6,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: root
-    url: jdbc:postgresql://localhost/gym
+    url: jdbc:postgresql://localhost:5432/gym
     platform: postgres
     initialization-mode: always
     continue-on-error: true
@@ -15,7 +15,11 @@ spring:
     generate-ddl: false
     hibernate:
       ddl-auto: none
+      default_schema: gym
+    format_sql: true
+    generate_statistics: true
     database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
 
 management:
   endpoints:
